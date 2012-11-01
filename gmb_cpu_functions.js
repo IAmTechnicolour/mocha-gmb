@@ -1,5 +1,6 @@
 
-/* These functions are for reading and writing to registers, virtual registers, and flags, once the CPU is 100% bug-free these should all be removed and put inline in gmb_opcodes.js and gmb_cb_opcodes.js */
+/* These functions are for reading and writing to registers, virtual registers, and flags, once the CPU is 100% bug-free these should
+all be removed and put inline in gmb_opcodes.js and gmb_cb_opcodes.js */
 
 function Zero() 	{ return !!(F & 0x80); }
 function Sub() 		{ return !!(F & 0x40); }
@@ -45,7 +46,8 @@ function Write(mem, val) 	{ return 0; }
 
 
 
-/* These functions are for specific sets of opcodes, once the CPU is bug-free these should be integrated into the opcode functions themselves for performance reasons. */
+/* These functions are for specific sets of opcodes, once the CPU is bug-free these should be integrated into the opcode functions themselves
+for performance reasons. */
 
 
 //16 Bit Arithmatic
@@ -71,7 +73,8 @@ function WordDec(val) {
 }
 
 function WordAdd(r1, r2) {
-	/* This is confusing, but essentially if the sum of the two nibbles of the two lower registers and the overflow of the sum of the higher regsters is greater than 0xF then there's a half-carry overflow. Yeah... */
+	/* This is confusing, but essentially if the sum of the two nibbles of the two lower registers and the overflow of the sum of the higher
+	regsters is greater than 0xF then there's a half-carry overflow. Yeah... */
 	SetHCarry( (( H & 0xF ) + (r1 & 0xF) + ( (L + r2) > 0xFF)) > 0xF );
 
 	H+= r1

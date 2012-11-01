@@ -1,21 +1,125 @@
 <html>
 	<head>
-		<script type="application/javascript">
-			function draw() {
-				var canvas = document.getElementById("canvas");
-				var ctx = canvas.getContext("2d");
 
-				ctx.fillStyle = "rgb(200,0,0)";
-				ctx.fillRect (10, 10, 55, 50);
-
-				ctx.fillStyle = "rgba(0, 0, 200, 0.5)";
-				ctx.fillRect (30, 30, 55, 50);
+		<style>
+			table
+			{
+				border-collapse:collapse;
 			}
+			table,th, td
+			{
+				border: 1px solid black;
+			}
+
+			td
+			{
+				width: 100px;
+				text-align: center;
+			}
+
+		</style>
+
+
+		<script type="text/javascript">
+
+			function zeroPad(num, numZeros) {
+				for(var i = 0; i < (numZeros - num.length); i++) {
+					num = "0" + num;
+				}
+				return num;
+			}
+
+			window.onerror=function(msg, url, linenumber){
+				var Opcode = Read(PC);
+				alert('Error message: '+msg+'\nURL: '+url+'\nLine Number: '+linenumber+'\nOp: '+Opcode+'\nPC: '+PC);
+				return true
+			}
+
+
+
+
+			function execute() {
+				for (var i=0;i<1000;i++) {
+					Operators[Read(PC)]();
+				}
+				debug();
+			}
+
+
+
+			function debug(){
+
+				var Opcode = Read(PC);
+				Operators[Opcode]();
+				var Mnemonic = Mnemonic_map[Opcode];
+
+				if (Opcode == 0xCB) {Mnemonic = Mnemonic_map_cb[Read(PC+1)]}
+
+				var InsertIntoDebug = [
+					zeroPad(Opcode.toString(16).toUpperCase(), 2),
+					Mnemonic, 
+					PC, 
+					SP, 
+					A, 
+					B, 
+					C, 
+					D, 
+					E, 
+					H, 
+					L, 
+					zeroPad((F>>4).toString(2),4)
+				];
+
+				var table = document.getElementById("tab");
+				var row = table.insertRow(1);
+
+
+				for (var i=0;i<InsertIntoDebug.length;i++) {
+					var cell = row.insertCell(i);
+					cell.innerHTML = InsertIntoDebug[i];
+				}
+
+				if (table.rows.length > 20) {
+					table.deleteRow(table.rows.length - 1)
+				}
+			}
+
+
+
+
 		</script>
+
+
+
+		<script type="application/javascript" src="gmb_mnemonic.js"></script>
+		<script type="application/javascript" src="gmb_memory.js"></script>
+		<script type="application/javascript" src="gmb_cpu.js"></script>
+		<script type="application/javascript" src="gmb_opcode_functions.js"></script>
+		<script type="application/javascript" src="gmb_opcodes.js"></script>
+		<script type="application/javascript" src="gmb_cb_opcodes.js"></script>
 	</head>
-	<body onload="draw()">
+	<body>
 
 		<canvas id="canvas" width="256" height="256"></canvas>
+
+		<button type="button" onclick="execute()">Execute</button>
+		<button type="button" onclick="run = setInterval(debug,1);">Run</button>
+		<button type="button" onclick="run = setInterval(execute,1);">Run fast</button>
+		<button type="button" onclick="clearInterval(run)">Stop</button>
+
+		<table id = "tab">
+			<thead>
+				<tr>
+					<td>Opcode</td><td>Mnemonic</td><td>PC</td><td>SP</td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>H</td><td>L</td><td>F</td>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+
+
+
+
 
 	</body>
 </html>

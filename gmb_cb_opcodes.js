@@ -86,77 +86,77 @@ OperatorsCB[ 0x3F ] = function() { A = SRL( A ); }
 
 
 //TEST BIT
-OperatorsCB[ 0x40 ] = function() SetZero( (B & 1) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x41 ] = function() SetZero( (C & 1) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x42 ] = function() SetZero( (D & 1) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x43 ] = function() SetZero( (E & 1) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x44 ] = function() SetZero( (H & 1) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x45 ] = function() SetZero( (L & 1) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x46 ] = function() SetZero( ( Read( (H << 8) + L ) & 1) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 16; }
-OperatorsCB[ 0x47 ] = function() SetZero( (A & 1) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x40 ] = function() { SetZero( (B & 1) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x41 ] = function() { SetZero( (C & 1) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x42 ] = function() { SetZero( (D & 1) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x43 ] = function() { SetZero( (E & 1) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x44 ] = function() { SetZero( (H & 1) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x45 ] = function() { SetZero( (L & 1) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x46 ] = function() { SetZero( ( Read( (H << 8) + L ) & 1) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 16; }
+OperatorsCB[ 0x47 ] = function() { SetZero( (A & 1) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
 
-OperatorsCB[ 0x48 ] = function() SetZero( (B & 2) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x49 ] = function() SetZero( (C & 2) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x4A ] = function() SetZero( (D & 2) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x4B ] = function() SetZero( (E & 2) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x4C ] = function() SetZero( (H & 2) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x4D ] = function() SetZero( (L & 2) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x4E ] = function() SetZero( ( Read( (H << 8) + L ) & 2) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 16; }
-OperatorsCB[ 0x4F ] = function() SetZero( (A & 2) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x48 ] = function() { SetZero( (B & 2) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x49 ] = function() { SetZero( (C & 2) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x4A ] = function() { SetZero( (D & 2) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x4B ] = function() { SetZero( (E & 2) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x4C ] = function() { SetZero( (H & 2) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x4D ] = function() { SetZero( (L & 2) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x4E ] = function() { SetZero( ( Read( (H << 8) + L ) & 2) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 16; }
+OperatorsCB[ 0x4F ] = function() { SetZero( (A & 2) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
 
-OperatorsCB[ 0x50 ] = function() SetZero( (B & 4) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x51 ] = function() SetZero( (C & 4) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x52 ] = function() SetZero( (D & 4) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x53 ] = function() SetZero( (E & 4) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x54 ] = function() SetZero( (H & 4) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x55 ] = function() SetZero( (L & 4) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x56 ] = function() SetZero( ( Read( (H << 8) + L ) & 4) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 16; }
-OperatorsCB[ 0x57 ] = function() SetZero( (A & 4) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x50 ] = function() { SetZero( (B & 4) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x51 ] = function() { SetZero( (C & 4) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x52 ] = function() { SetZero( (D & 4) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x53 ] = function() { SetZero( (E & 4) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x54 ] = function() { SetZero( (H & 4) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x55 ] = function() { SetZero( (L & 4) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x56 ] = function() { SetZero( ( Read( (H << 8) + L ) & 4) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 16; }
+OperatorsCB[ 0x57 ] = function() { SetZero( (A & 4) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
 
-OperatorsCB[ 0x58 ] = function() SetZero( (B & 8) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x59 ] = function() SetZero( (C & 8) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x5A ] = function() SetZero( (D & 8) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x5B ] = function() SetZero( (E & 8) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x5C ] = function() SetZero( (H & 8) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x5D ] = function() SetZero( (L & 8) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x5E ] = function() SetZero( ( Read( (H << 8) + L ) & 8) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 16; }
-OperatorsCB[ 0x5F ] = function() SetZero( (A & 8) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x58 ] = function() { SetZero( (B & 8) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x59 ] = function() { SetZero( (C & 8) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x5A ] = function() { SetZero( (D & 8) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x5B ] = function() { SetZero( (E & 8) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x5C ] = function() { SetZero( (H & 8) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x5D ] = function() { SetZero( (L & 8) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x5E ] = function() { SetZero( ( Read( (H << 8) + L ) & 8) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 16; }
+OperatorsCB[ 0x5F ] = function() { SetZero( (A & 8) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
 
-OperatorsCB[ 0x60 ] = function() SetZero( (B & 16) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x61 ] = function() SetZero( (C & 16) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x62 ] = function() SetZero( (D & 16) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x63 ] = function() SetZero( (E & 16) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x64 ] = function() SetZero( (H & 16) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x65 ] = function() SetZero( (L & 16) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x66 ] = function() SetZero( ( Read( (H << 8) + L ) & 16) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 16; }
-OperatorsCB[ 0x67 ] = function() SetZero( (A & 16) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x60 ] = function() { SetZero( (B & 16) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x61 ] = function() { SetZero( (C & 16) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x62 ] = function() { SetZero( (D & 16) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x63 ] = function() { SetZero( (E & 16) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x64 ] = function() { SetZero( (H & 16) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x65 ] = function() { SetZero( (L & 16) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x66 ] = function() { SetZero( ( Read( (H << 8) + L ) & 16) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 16; }
+OperatorsCB[ 0x67 ] = function() { SetZero( (A & 16) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
 
-OperatorsCB[ 0x68 ] = function() SetZero( (B & 32) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x69 ] = function() SetZero( (C & 32) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x6A ] = function() SetZero( (D & 32) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x6B ] = function() SetZero( (E & 32) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x6C ] = function() SetZero( (H & 32) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x6D ] = function() SetZero( (L & 32) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x6E ] = function() SetZero( ( Read( (H << 8) + L ) & 32) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 16; }
-OperatorsCB[ 0x6F ] = function() SetZero( (A & 32) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x68 ] = function() { SetZero( (B & 32) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x69 ] = function() { SetZero( (C & 32) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x6A ] = function() { SetZero( (D & 32) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x6B ] = function() { SetZero( (E & 32) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x6C ] = function() { SetZero( (H & 32) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x6D ] = function() { SetZero( (L & 32) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x6E ] = function() { SetZero( ( Read( (H << 8) + L ) & 32) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 16; }
+OperatorsCB[ 0x6F ] = function() { SetZero( (A & 32) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
 
-OperatorsCB[ 0x70 ] = function() SetZero( (B & 64) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x71 ] = function() SetZero( (C & 64) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x72 ] = function() SetZero( (D & 64) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x73 ] = function() SetZero( (E & 64) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x74 ] = function() SetZero( (H & 64) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x75 ] = function() SetZero( (L & 64) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x76 ] = function() SetZero( ( Read( (H << 8) + L ) & 64) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 16; }
-OperatorsCB[ 0x77 ] = function() SetZero( (A & 64) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x70 ] = function() { SetZero( (B & 64) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x71 ] = function() { SetZero( (C & 64) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x72 ] = function() { SetZero( (D & 64) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x73 ] = function() { SetZero( (E & 64) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x74 ] = function() { SetZero( (H & 64) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x75 ] = function() { SetZero( (L & 64) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x76 ] = function() { SetZero( ( Read( (H << 8) + L ) & 64) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 16; }
+OperatorsCB[ 0x77 ] = function() { SetZero( (A & 64) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
 
-OperatorsCB[ 0x78 ] = function() SetZero( (B & 128) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x79 ] = function() SetZero( (C & 128) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x7A ] = function() SetZero( (D & 128) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x7B ] = function() SetZero( (E & 128) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x7C ] = function() SetZero( (H & 128) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x7D ] = function() SetZero( (L & 128) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
-OperatorsCB[ 0x7E ] = function() SetZero( ( Read( (H << 8) + L ) & 128) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 16; }
-OperatorsCB[ 0x7F ] = function() SetZero( (A & 128) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x78 ] = function() { SetZero( (B & 128) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x79 ] = function() { SetZero( (C & 128) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x7A ] = function() { SetZero( (D & 128) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x7B ] = function() { SetZero( (E & 128) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x7C ] = function() { SetZero( (H & 128) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x7D ] = function() { SetZero( (L & 128) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
+OperatorsCB[ 0x7E ] = function() { SetZero( ( Read( (H << 8) + L ) & 128) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 16; }
+OperatorsCB[ 0x7F ] = function() { SetZero( (A & 128) == 0 ); SetHCarry(1); SetSub(0); PC+= 2; Cycle = 8; }
 
 
 

@@ -28,19 +28,18 @@ function SetBC(val) {
 	C = val & 0x00FF;
 }
 
-function SetAF(val) {
+function SetDE(val) {
 	D = (val & 0xFF00) >> 8;
 	E = val & 0x00FF;
 }
 
-function SetAF(val) {
+function SetHL(val) {
 	H = (val & 0xFF00) >> 8;
 	L = val & 0x00FF;
 }
 
 // Reads will get overwritten by the memory module
-function Read(mem) 	{ return 0; }
-function Write(mem, val) 	{ return 0; }
+
 
 
 
@@ -161,23 +160,23 @@ function ResetPC(addr) {
 
 //Stack Stuff, this can be done inline better tbh
 
-function StackPush( r1, r2 )
+function StackPush( r1, r2 ) {
 	SP-= 2;
 	Write( SP  + 1, r1 );
 	Write( SP, r2 );
 	
 	PC++; 
 	Cycle = 16;
-end
+}
 
-function StackPop()	
-	var r = ( Read( SP + 1 ) << 8 ) + Read( SP )
+function StackPop()	{
+	var r = ( Read( SP + 1 ) << 8 ) + Read( SP );
 	SP+= 2;
 	
 	PC++;
 	Cycle = 12;
 	return r;
-end
+}
 
 
 
@@ -375,7 +374,7 @@ function RL(r1) {
 	return r1;
 }
 
-function RR(r1)
+function RR(r1) {
 	var bit0 = r1 & 1;
 	r1 = (r1 >> 1) + Carry() * 128;
 	
@@ -388,7 +387,7 @@ function RR(r1)
 	Cycle = 8
 	
 	return r1;
-end
+}
 
 function SLA(r1) {
 	var bit7 = (r1 & 128) == 128;
@@ -406,7 +405,7 @@ function SLA(r1) {
 }
 
 //Because this is an Arithmatic Right Shift the sign bit is maintained, the least significant bit is pushed into carry.
-function SRA(r1)
+function SRA(r1) {
 	var bit7 = (r1 & 128);
 	var bit0 = r1 & 1;
 	r1 = (r1 >> 1) + bit7;

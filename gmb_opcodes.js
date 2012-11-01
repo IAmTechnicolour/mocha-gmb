@@ -83,14 +83,14 @@ Operators[ 0x7E ] =  function() { A = Read( (H << 8) + L); Cycle = 8; PC++; }
 Operators[ 0x7F ] =  function() { A = A; Cycle = 4; PC++; }
 
 //Immediate Loads
-Operators[ 0x06 ] =  function() { B = Read(PC+1); Cycle = 8; PC+= 2; end
-Operators[ 0x0E ] =  function() { C = Read(PC+1); Cycle = 8; PC+= 2; end
-Operators[ 0x16 ] =  function() { D = Read(PC+1); Cycle = 8; PC+= 2; end
-Operators[ 0x1E ] =  function() { E = Read(PC+1); Cycle = 8; PC+= 2; end
-Operators[ 0x26 ] =  function() { H = Read(PC+1); Cycle = 8; PC+= 2; end
-Operators[ 0x2E ] =  function() { L = Read(PC+1); Cycle = 8; PC+= 2; end
-Operators[ 0x36 ] =  function() { Write( (H << 8) + L, Read(PC+1)); Cycle = 12; PC+= 2; end
-Operators[ 0x3E ] =  function() { A = Read(PC+1); Cycle = 8; PC+= 2; end
+Operators[ 0x06 ] =  function() { B = Read(PC+1); Cycle = 8; PC+= 2; }
+Operators[ 0x0E ] =  function() { C = Read(PC+1); Cycle = 8; PC+= 2; }
+Operators[ 0x16 ] =  function() { D = Read(PC+1); Cycle = 8; PC+= 2; }
+Operators[ 0x1E ] =  function() { E = Read(PC+1); Cycle = 8; PC+= 2; }
+Operators[ 0x26 ] =  function() { H = Read(PC+1); Cycle = 8; PC+= 2; }
+Operators[ 0x2E ] =  function() { L = Read(PC+1); Cycle = 8; PC+= 2; }
+Operators[ 0x36 ] =  function() { Write( (H << 8) + L, Read(PC+1)); Cycle = 12; PC+= 2; }
+Operators[ 0x3E ] =  function() { A = Read(PC+1); Cycle = 8; PC+= 2; }
 
 //The wierd 8 bit loads
 Operators[ 0xE0 ] = function() { Write( 0xFF00 + Read(PC+1), A); Cycle = 12; PC+= 2; } //Write A into 0xFF00 + a8

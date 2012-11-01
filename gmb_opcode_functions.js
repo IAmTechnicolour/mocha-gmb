@@ -317,3 +317,139 @@ function ByteDec(r1) {
 	return r1;
 }
 
+
+
+
+
+
+
+
+
+
+
+//CB Opcode functions
+
+
+function RLC(r1) {
+	var bit7 = (r1 & 128) == 128;
+	r1 = ( (r1 << 1) & 0xFE ) + bit7;
+
+	SetCarry(bit7);
+	SetZero(r1 == 0);
+	SetHCarry(0);
+	SetSub(0);
+
+	PC+= 2;
+	Cycle = 8;
+	
+	return r1;
+}
+
+function RRC(r1) {
+	var bit0 = r1 & 1;
+	r1 = (r1 >> 1) + bit0 * 128;
+
+	SetCarry(bit0);
+	SetZero(r1 == 0);
+	SetHCarry(0);
+	SetSub(0);
+	
+	PC+= 2;
+	Cycle = 8;
+	
+	return r1;
+}
+
+function RL(r1) {
+	var bit7 = (r1 & 128) == 128;
+	r1 = ( (r1 << 1) & 0xFE ) + Carry();
+
+	SetCarry(bit7);
+	SetZero(r1 == 0);
+	SetHCarry(0);
+	SetSub(0);
+	
+	PC+= 2;
+	Cycle = 8;
+	
+	return r1;
+}
+
+function RR(r1)
+	var bit0 = r1 & 1;
+	r1 = (r1 >> 1) + Carry() * 128;
+	
+	SetCarry(bit0);
+	SetZero(r1 == 0);
+	SetHCarry(0);
+	SetSub(0);
+	
+	PC = PC + 2
+	Cycle = 8
+	
+	return r1;
+end
+
+function SLA(r1) {
+	var bit7 = (r1 & 128) == 128;
+	r1 = (r1 << 1) & 0xFE; //0's shift onto the right side. 
+
+	SetCarry(bit7);
+	SetZero(r1 == 0);
+	SetHCarry(0);
+	SetSub(0);
+	
+	PC+= 2;
+	Cycle = 8;
+	
+	return r1;
+}
+
+//Because this is an Arithmatic Right Shift the sign bit is maintained, the least significant bit is pushed into carry.
+function SRA(r1)
+	var bit7 = (r1 & 128);
+	var bit0 = r1 & 1;
+	r1 = (r1 >> 1) + bit7;
+
+	SetCarry(bit0);
+	SetZero(r1 == 0);
+	SetHCarry(0);
+	SetSub(0);
+	
+	PC+= 2;
+	Cycle = 8;
+	
+	return r1;
+}
+
+//Logical Shift Right, sign bit is not maintained.
+function SRL(r1) {
+	var bit0 = r1 & 1;
+	r1 = (r1 >> 1)
+
+	SetCarry(bit0);
+	SetZero(r1 == 0);
+	SetHCarry(0);
+	SetSub(0);
+	
+	PC+= 2;
+	Cycle = 8;
+	
+	return r1;
+}
+
+//Swap the high and low nibbles. Mmmm, nibbles.
+function SWAP(r1) {
+	r1 = ((r1 & 0xF0) >> 4) + ((r1 & 0x0F) << 4);
+
+	SetCarry(0);
+	SetZero(r1 == 0);
+	SetHCarry(0);
+	SetSub(0);
+
+	PC+= 2;
+	Cycle = 8;
+	
+	return r1;
+}
+

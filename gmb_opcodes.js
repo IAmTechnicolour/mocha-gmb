@@ -154,6 +154,7 @@ Operators[ 0x10 ] = function() { Halt = 1; PC+= 2; Cycle = 4; } // STOP
 Operators[ 0x76 ] = function() { if (IME) {Halt = 1;}; PC++; Cycle = 4; } //Halt
 Operators[ 0xF3 ] = function() { IME = 0; PC++; Cycle = 4; } // Disable Interupts, DI
 Operators[ 0xFB ] = function() { IME = 1; PC++; Cycle = 4; } // Enable Interupts, EI
+Operators[ 0xCB ] = function() { OperatorsCB[Read(PC + 1) ](); } //Call CB Opcode
 
 
 
@@ -515,7 +516,7 @@ Operators[ 0xF8 ] = function() {
 	SetZero(0);
 	
 	H = tSP >> 8;
-	L = tsp & 0xFF;
+	L = tSP & 0xFF;
 	
 	PC+= 2;
 	Cycle = 12;

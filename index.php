@@ -15,7 +15,7 @@
 	</head>
 	<body onload="draw()">
 
-		<canvas id="canvas" width="300" height="300"></canvas>
+		<canvas id="canvas" width="256" height="256"></canvas>
 
 	</body>
 </html>

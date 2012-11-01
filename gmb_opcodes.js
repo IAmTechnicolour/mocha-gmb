@@ -467,11 +467,15 @@ Operators[ 0xE8 ] =  function() {
 	var s8 = ((s8&127) - (s8&128)); //Signed immedate
 	var tSP = SP + s8 // Value of the SP when added with the signed immediate
 
-	/* Holy balls what the hell is going on here... If the signed immediate value is a positive number then we calculate the carry as we would normally for addition, if the low byte of the stack pointer and the signed immediate overflow 0xFF, then carry is set. Again, same for the half-carry flag, if the lower nibble of the stack pointer and signed immediate overflow 0xF then the half carry flag is set.
-
-	In the event that the signed immediate is negative then we do what we would usually do for subtraction, ie if the low byte/low nibble underflow then we set the carry and half carry flags respectively.
-	
-	I wonder if there's a way to do this using less processing power and/or not dividing it between positive or negative immediate values.
+	/* 
+	Holy balls what the hell is going on here... If the signed immediate value is a positive number then 
+	we calculate the carry as we would normally for addition, if the low byte of the stack pointer and the 
+	signed immediate overflow 0xFF, then carry is set. Again, same for the half-carry flag, if the lower nibble 
+	of the stack pointer and signed immediate overflow 0xF then the half carry flag is set.
+	In the event that the signed immediate is negative then we do what we would usually do for subtraction,
+	ie if the low byte/low nibble underflow then we set the carry and half carry flags respectively.
+	I wonder if there's a way to do this using less processing power and/or not dividing it between positive
+	or negative immediate values.
 	 */
 
 	if (s8 >= 0) {
@@ -482,7 +486,8 @@ Operators[ 0xE8 ] =  function() {
 		SetHCarry( (tSP & 0xF) <= (SP & 0xF) );
 	}
 
-	SP = tSP & 0xFFFF//The ANDing is probably not necessary, no working rom would overflow into ROM space without crashing anyway, we never check the PC for overflowing. 
+	SP = tSP & 0xFFFF/*The ANDing is probably not necessary, no working rom would overflow 
+	into ROM space without crashing anyway, we never check the PC for overflowing. */
 
 	SetSub(0);
 	SetZero(0);

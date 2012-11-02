@@ -5,6 +5,7 @@
 			table
 			{
 				border-collapse:collapse;
+				font-family: "Courier New", monospace;
 			}
 			table,th, td
 			{
@@ -37,11 +38,10 @@
 
 
 
-			function zeroPad(num, numZeros) {
-				for(var i = 0; i < (numZeros - num.length); i++) {
-					num = "0" + num;
-				}
-				return num;
+			function pad(num, size) {
+			    var s = num+"";
+			    while (s.length < size) s = "0" + s;
+			    return s;
 			}
 
 
@@ -67,7 +67,7 @@
 				if (Opcode == 0xCB) {Mnemonic = Mnemonic_map_cb[Read(PC+1)]}
 
 				var InsertIntoDebug = [
-					zeroPad(Opcode.toString(16).toUpperCase(), 2),
+					pad(Opcode.toString(16).toUpperCase(), 2),
 					Mnemonic, 
 					PC, 
 					SP, 
@@ -78,7 +78,7 @@
 					E, 
 					H, 
 					L, 
-					zeroPad((F>>4).toString(2),4)
+					pad((F>>4).toString(2),4)
 				];
 
 				var table = document.getElementById("tab");
@@ -114,7 +114,7 @@
 		<canvas id="canvas" width="256" height="256"></canvas>
 
 		<br><br>
-		<input type="file" id="files" name="files[]" multiple/><br>
+		<input type="file" id="file" name="file"/><br>
 		<output id="list"></output><br>
 
 		<button type="button" onclick="debug()">Execute</button>
@@ -136,21 +136,35 @@
 
 		<script type = "application/javascript">
 
-			function handleFileSelect(evt) {
-				var files = evt.target.files; // FileList object
+			var reader = new FileReader();
 
-				// files is a FileList of File objects. List some properties.
-				var output = [];
-				for (var i = 0, f; f = files[i]; i++) {
-					output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
-					f.size, ' bytes, last modified: ',
-					f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
-					'</li>');
+			reader.onload = function(evt) {
+				var ROMStr = reader.result;
+				//var ROMStr = ROMStr.replace(/[^a-zA-Z0-9]/g, "")
+				//alert(ROMStr);
+
+				ROM = [];
+
+
+				for (var i = 0; i < ROMStr.length; i++) {
+				    ROM[i] = ROMStr.charCodeAt(i) + '.';
 				}
-				document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
+
+				alert('ROM Length: ' + ROM.length + '\nBanks:' + (ROM.length/16384));
+
+				
 			}
 
-			document.getElementById('files').addEventListener('change', handleFileSelect, false);
+			function handleFileSelect(evt) {
+				var file = evt.target.files[0];
+				document.getElementById('list').innerHTML = 
+				'<strong>' + escape(file.name) + '</strong> (' + (file.type || 'n/a') + ') - ' + file.size + ' bytes';
+
+				reader.readAsBinaryString(file)
+
+			}
+
+			document.getElementById('file').addEventListener('change', handleFileSelect, false);
 			
 		</script>
 

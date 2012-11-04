@@ -1,6 +1,14 @@
 <html>
 	<head>
 
+		<script type="application/javascript" src="gmb_mnemonic.js"></script>
+		<script type="application/javascript" src="gmb_memory.js"></script>
+		<script type="application/javascript" src="gmb_cpu.js"></script>
+		<script type="application/javascript" src="gmb_opcode_functions.js"></script>
+		<script type="application/javascript" src="gmb_opcodes.js"></script>
+		<script type="application/javascript" src="gmb_cb_opcodes.js"></script>
+		<script type="application/javascript" src="gmb_gpu.js"></script>
+
 		<style>
 			table
 			{
@@ -19,6 +27,38 @@
 			}
 
 		</style>
+
+
+
+
+	</head>
+	<body>
+
+		<canvas id="canvas" width="256" height="256"></canvas>
+
+		<br><br>
+		<input type="file" id="file" name="file"/><br>
+		<output id="list"></output><br>
+
+		<button type="button" onclick="debug()">Execute</button>
+		<button type="button" onclick="run = setInterval(debug,1);">Run</button>
+		<button type="button" onclick="run = setInterval(execute,1);">Run fast</button>
+		<button type="button" onclick="clearInterval(run)">Stop</button>
+
+		<table id = "tab">
+			<thead>
+				<tr>
+					<td>Opcode</td><td>Mnemonic</td><td>PC</td><td>SP</td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>H</td><td>L</td><td>F</td>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+
+		<br><br><br>
+
+		<table id = "tab2">
+		</table>
 
 
 		<script type="text/javascript">
@@ -50,10 +90,26 @@
 
 
 			function execute() {
-				for (var i=0;i<1000;i++) {
+				for (var e=0;e<1000;e++) {
+					OpCount[Read(PC)]++;
 					Operators[Read(PC)]();
+					
 				}
 				debug();
+			}
+
+
+			var OpCount = [];
+
+			for (var i=0xFF;i >= 0;i--) {
+				var table = document.getElementById("tab2");
+				var row = table.insertRow(0);
+				var cell = row.insertCell(0);
+				cell.innerHTML = Mnemonic_map[i];
+				var cell = row.insertCell(1);
+				cell.innerHTML = 0;
+
+				OpCount[i] = 0;
 			}
 
 
@@ -63,6 +119,14 @@
 				var Opcode = Read(PC);
 				Operators[Opcode]();
 				var Mnemonic = Mnemonic_map[Opcode];
+
+
+				OpCount[Opcode]++;
+
+				var x=document.getElementById('tab2').rows;
+    			var y=x[Opcode].cells;
+    			y[1].innerHTML=OpCount[Opcode];
+
 
 				if (Opcode == 0xCB) {Mnemonic = Mnemonic_map_cb[Read(PC+1)]}
 
@@ -93,6 +157,8 @@
 				if (table.rows.length > 20) {
 					table.deleteRow(table.rows.length - 1)
 				}
+
+				GPUDraw();
 			}
 
 
@@ -100,37 +166,6 @@
 
 		</script>
 
-
-
-		<script type="application/javascript" src="gmb_mnemonic.js"></script>
-		<script type="application/javascript" src="gmb_memory.js"></script>
-		<script type="application/javascript" src="gmb_cpu.js"></script>
-		<script type="application/javascript" src="gmb_opcode_functions.js"></script>
-		<script type="application/javascript" src="gmb_opcodes.js"></script>
-		<script type="application/javascript" src="gmb_cb_opcodes.js"></script>
-	</head>
-	<body>
-
-		<canvas id="canvas" width="256" height="256"></canvas>
-
-		<br><br>
-		<input type="file" id="file" name="file"/><br>
-		<output id="list"></output><br>
-
-		<button type="button" onclick="debug()">Execute</button>
-		<button type="button" onclick="run = setInterval(debug,1);">Run</button>
-		<button type="button" onclick="run = setInterval(execute,1);">Run fast</button>
-		<button type="button" onclick="clearInterval(run)">Stop</button>
-
-		<table id = "tab">
-			<thead>
-				<tr>
-					<td>Opcode</td><td>Mnemonic</td><td>PC</td><td>SP</td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>H</td><td>L</td><td>F</td>
-				</tr>
-			</thead>
-			<tbody>
-			</tbody>
-		</table>
 
 
 
@@ -147,7 +182,7 @@
 
 
 				for (var i = 0; i < ROMStr.length; i++) {
-				    ROM[i] = ROMStr.charCodeAt(i) + '.';
+				    ROM[i] = ROMStr.charCodeAt(i);
 				}
 
 				alert('ROM Length: ' + ROM.length + '\nBanks:' + (ROM.length/16384));

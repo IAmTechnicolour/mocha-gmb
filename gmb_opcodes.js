@@ -64,13 +64,13 @@ Operators[ 0x6E ] =  function() { L = Read( (H << 8) + L); Cycle = 8; PC++; }
 Operators[ 0x6F ] =  function() { L = A; Cycle = 4; PC++; }
 
 // Load into (HL)
-Operators[ 0x70 ] =  function() { Write(B, (H << 8) + L); Cycle = 8; PC++; }
-Operators[ 0x71 ] =  function() { Write(C, (H << 8) + L); Cycle = 8; PC++; }
-Operators[ 0x72 ] =  function() { Write(D, (H << 8) + L); Cycle = 8; PC++; }
-Operators[ 0x73 ] =  function() { Write(E, (H << 8) + L); Cycle = 8; PC++; }
-Operators[ 0x74 ] =  function() { Write(H, (H << 8) + L); Cycle = 8; PC++; }
-Operators[ 0x75 ] =  function() { Write(L, (H << 8) + L); Cycle = 8; PC++; }
-Operators[ 0x77 ] =  function() { Write(A, (H << 8) + L); Cycle = 8; PC++; }
+Operators[ 0x70 ] =  function() { Write((H << 8) + L, B); Cycle = 8; PC++; }
+Operators[ 0x71 ] =  function() { Write((H << 8) + L, C); Cycle = 8; PC++; }
+Operators[ 0x72 ] =  function() { Write((H << 8) + L, D); Cycle = 8; PC++; }
+Operators[ 0x73 ] =  function() { Write((H << 8) + L, E); Cycle = 8; PC++; }
+Operators[ 0x74 ] =  function() { Write((H << 8) + L, H); Cycle = 8; PC++; }
+Operators[ 0x75 ] =  function() { Write((H << 8) + L, L); Cycle = 8; PC++; }
+Operators[ 0x77 ] =  function() { Write((H << 8) + L, A); Cycle = 8; PC++; }
 
 // Load into A
 Operators[ 0x78 ] =  function() { A = B; Cycle = 4; PC++; }
@@ -203,9 +203,7 @@ Operators[ 0xDF ] = function() { ResetPC( 0x18 ); }
 Operators[ 0xEF ] = function() { ResetPC( 0x28 ); }
 Operators[ 0xFF ] = function() { ResetPC( 0x38 ); }
 
-
-
-
+Operators[ 0xE9 ] = function() { PC = (H << 8) + L; Cycle = 4; }
 
 
 

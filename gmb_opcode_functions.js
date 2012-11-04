@@ -38,9 +38,6 @@ function SetHL(val) {
 	L = val & 0x00FF;
 }
 
-// Reads will get overwritten by the memory module
-
-
 
 
 
@@ -151,32 +148,10 @@ function ResetPC(addr) {
 	Write(SP + 1, (PC + 1) >> 8);
 	Write(SP, (PC + 1) & 0xFF);
 
-	PC = addrl;
+	PC = addr;
 	Cycle = 16;
 }
 		
-
-
-
-//Stack Stuff, this can be done inline better tbh
-
-function StackPush( r1, r2 ) {
-	SP-= 2;
-	Write( SP  + 1, r1 );
-	Write( SP, r2 );
-	
-	PC++; 
-	Cycle = 16;
-}
-
-function StackPop()	{
-	var r = ( Read( SP + 1 ) << 8 ) + Read( SP );
-	SP+= 2;
-	
-	PC++;
-	Cycle = 12;
-	return r;
-}
 
 
 
@@ -264,7 +239,7 @@ function ByteXor(r1) {
 	Cycle = 4;
 }
 
-function ByteXor(r1) {
+function ByteOr(r1) {
 	A|= r1;
 	SetZero(A == 0);
 	SetCarry(0);
@@ -376,14 +351,14 @@ function RL(r1) {
 
 function RR(r1) {
 	var bit0 = r1 & 1;
-	r1 = (r1 >> 1) + Carry() * 128;
+	r1 = (r1 >> 1) + (Carry() * 128);
 	
 	SetCarry(bit0);
 	SetZero(r1 == 0);
 	SetHCarry(0);
 	SetSub(0);
 	
-	PC = PC + 2
+	PC+= 2;
 	Cycle = 8
 	
 	return r1;

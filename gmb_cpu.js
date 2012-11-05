@@ -8,13 +8,14 @@ var H = 0;
 var L = 0;
 
 var SP = 0;
-var PC = 0x100;
+var PC = 0;
 
 var IME = 0;
 var Halt = 0;
 var Stop = 0;
 
 var Cycle = 0;
+var TotalCycles = 0;
 
 
 
@@ -31,7 +32,7 @@ function boot() {
 	L = 0;
 
 	SP = 0;
-	PC = 0x100;
+	PC = 0;
 
 	IME = 0;
 	Halt = 0;
@@ -39,7 +40,14 @@ function boot() {
 
 	Cycle = 0;
 	TotalCycles = 0;
+
+	bootTimers();
 }
+
+/*
+The Execution Loop is equivilent to one frame of operation, in theory. 
+In practice it's virtually impossible to sync the Gameboy refresh rate with the user refreshrate.
+*/
 
 function executionLoop() {
 
@@ -50,8 +58,19 @@ function executionLoop() {
 			Cycle = 4;
 		}
 
+		TotalCycles+= Cycle;
+
 		updateTimers();
+		updateLCD();
+		updateInterupts();
+
 	}
 
 	TotalCycles-= 70224;
+	
+	GPUDraw("canvas1", 0x9800, 1);
+	GPUDraw("canvas2", 0x9800, 0);
+	GPUDraw("canvas3", 0x9C00, 1);
+	GPUDraw("canvas4", 0x9C00, 0);
 }
+

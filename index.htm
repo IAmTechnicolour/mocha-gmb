@@ -8,6 +8,9 @@
 		<script type="application/javascript" src="gmb_opcodes.js"></script>
 		<script type="application/javascript" src="gmb_cb_opcodes.js"></script>
 		<script type="application/javascript" src="gmb_gpu.js"></script>
+		<script type="application/javascript" src="gmb_lcd.js"></script>
+		<script type="application/javascript" src="gmb_timers.js"></script>
+		<script type="application/javascript" src="gmb_interupts.js"></script>
 
 		<style>
 			table
@@ -34,15 +37,17 @@
 	</head>
 	<body>
 
-		<canvas id="canvas" width="256" height="256"></canvas>
+		<canvas id="canvas1" width="256" height="256"></canvas>
+		<canvas id="canvas2" width="256" height="256"></canvas>
+		<canvas id="canvas3" width="256" height="256"></canvas>
+		<canvas id="canvas4" width="256" height="256"></canvas>
 
 		<br><br>
 		<input type="file" id="file" name="file"/><br>
 		<output id="list"></output><br>
 
 		<button type="button" onclick="debug()">Execute</button>
-		<button type="button" onclick="run = setInterval(debug,1);">Run</button>
-		<button type="button" onclick="run = setInterval(execute,10);">Run fast</button>
+		<button type="button" onclick="run = setInterval(executionLoop,16.6);">Run</button>
 		<button type="button" onclick="clearInterval(run)">Stop</button>
 
 		<table id = "tab">
@@ -74,10 +79,6 @@
 
 
 
-
-
-
-
 			function pad(num, size) {
 			    var s = num+"";
 			    while (s.length < size) s = "0" + s;
@@ -86,19 +87,7 @@
 
 
 
-
-
-
-			function execute() {
-				for (var e=0;e<30000;e++) {
-					OpCount[Read(PC)]++;
-					Operators[Read(PC)]();
-					
-				}
-				debug();
-			}
-
-
+			/*
 			var OpCount = [];
 
 			for (var i=0xFF;i >= 0;i--) {
@@ -111,21 +100,23 @@
 
 				OpCount[i] = 0;
 			}
+			*/
 
 
 
-			function debug(){
+			function debug() {
 
 				var Opcode = Read(PC);
 				Operators[Opcode]();
 				var Mnemonic = Mnemonic_map[Opcode];
 
-
+				/*
 				OpCount[Opcode]++;
 
 				var x=document.getElementById('tab2').rows;
     			var y=x[Opcode].cells;
     			y[1].innerHTML=OpCount[Opcode];
+    			*/
 
 
 				if (Opcode == 0xCB) {Mnemonic = Mnemonic_map_cb[Read(PC+1)]}
@@ -158,7 +149,7 @@
 					table.deleteRow(table.rows.length - 1)
 				}
 
-				GPUDraw();
+
 			}
 
 
@@ -186,7 +177,9 @@
 				}	
 
 				alert('ROM size: ' + ROM.length +
-				' bytes\nROM type: ' + mbc_type[ROM[0x0147]] + "\nROM banks: " + mbc_rom_size[ROM[0x0148]] + "\nRAM banks: " + mbc_ram_size[ROM[0x0149]]);
+				' bytes\nROM type: ' + mbc_type[ROM[0x0147]] + 
+				"\nROM banks: " + mbc_rom_size[ROM[0x0148]] + 
+				"\nRAM banks: " + mbc_ram_size[ROM[0x0149]]);
 
 				
 			}

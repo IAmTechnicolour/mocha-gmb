@@ -33,8 +33,8 @@ MRead[ 0xFF06 ] = function( addr ) { return TimerBase; }		//What the timer reset
 MRead[ 0xFF07 ] = function( addr ) { return IO[ 0xFF07 ]; } 	//Timer control register
 
 MWrite[ 0xFF04 ] = function( addr, data ) { Divider = 0; }		//Divider reset to 0 when written to
-MWrite[ 0xFF05 ] = function( addr, data ) { Timer = Data; }		//Set timer
-MWrite[ 0xFF06 ] = function( addr, data ) { TimerBase = Data; }	//Set timer base
+MWrite[ 0xFF05 ] = function( addr, data ) { Timer = data; }		//Set timer
+MWrite[ 0xFF06 ] = function( addr, data ) { TimerBase = data; }	//Set timer base
 MWrite[ 0xFF07 ] = function( addr, data ) {
 	IO[ 0xFF07 ] = data & 7; 									// First 3 bits, the timer control register can be read as well as written to. 
 	TimerCounter = TimerTable[ data & 3 ];						//bits 0 and 1 set the timer 

@@ -42,7 +42,7 @@
 
 		<button type="button" onclick="debug()">Execute</button>
 		<button type="button" onclick="run = setInterval(debug,1);">Run</button>
-		<button type="button" onclick="run = setInterval(execute,1);">Run fast</button>
+		<button type="button" onclick="run = setInterval(execute,10);">Run fast</button>
 		<button type="button" onclick="clearInterval(run)">Stop</button>
 
 		<table id = "tab">
@@ -90,7 +90,7 @@
 
 
 			function execute() {
-				for (var e=0;e<1000;e++) {
+				for (var e=0;e<30000;e++) {
 					OpCount[Read(PC)]++;
 					Operators[Read(PC)]();
 					
@@ -183,9 +183,10 @@
 
 				for (var i = 0; i < ROMStr.length; i++) {
 				    ROM[i] = ROMStr.charCodeAt(i);
-				}
+				}	
 
-				alert('ROM Length: ' + ROM.length + '\nBanks:' + (ROM.length/16384));
+				alert('ROM size: ' + ROM.length +
+				' bytes\nROM type: ' + mbc_type[ROM[0x0147]] + "\nROM banks: " + mbc_rom_size[ROM[0x0148]] + "\nRAM banks: " + mbc_ram_size[ROM[0x0149]]);
 
 				
 			}

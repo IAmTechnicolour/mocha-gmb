@@ -163,7 +163,7 @@ function ByteAdd(r1) {
 	SetHCarry( ((A & 0xF) + (r1 & 0xF)) > 0xF );
 
 	A+= r1;
-	SetCarry( C > 0xFF );
+	SetCarry( A > 0xFF );
 	A&= 0xFF;
 
 	SetSub(0);
@@ -178,7 +178,7 @@ function ByteAdc(r1) {
 	SetHCarry( ((A & 0xF) + (r1 & 0xF) + Carry()) > 0xF );
 
 	A+= r1 + Carry()
-	SetCarry( C > 0xFF );
+	SetCarry( A > 0xFF );
 	A&= 0xFF;
 
 	SetSub(0);
@@ -204,10 +204,12 @@ function ByteSub(r1) {
 }
 
 function ByteSbc(r1) {
-	SetHCarry( ((r1 & 0xF) + Carry()) > (A & 0xF) );
-	SetCarry( (r1 + Carry()) > A);
+	var subval = r1 + Carry();
 
-	A-= r1 + Carry();
+	SetHCarry( ((r1 & 0xF) + Carry()) > (A & 0xF) );
+	SetCarry( subval > A);
+
+	A-= subval;
 	A&= 0xFF;
 
 	SetSub(1);
@@ -278,7 +280,7 @@ function ByteInc(r1) {
 }
 
 function ByteDec(r1) {
-	SetHCarry( ((r1 - 1) & 0xF) > (r1 & 0xF) );
+	SetHCarry( (r1 & 0xF) == 0 );
 	r1-= 1;
 	r1&= 0xFF;
 

@@ -42,3 +42,55 @@ Mnemonic_map_cb = [
 "SET 3,(HL)", "SET 3,A", "SET 4,B", "SET 4,C", "SET 4,D", "SET 4,E", "SET 4,H", "SET 4,L", "SET 4,(HL)", "SET 4,A", "SET 5,B", "SET 5,C",
 "SET 5,D", "SET 5,E", "SET 5,H", "SET 5,L", "SET 5,(HL)", "SET 5,A", "SET 6,B", "SET 6,C", "SET 6,D", "SET 6,E", "SET 6,H", "SET 6,L",
 "SET 6,(HL)", "SET 6,A", "SET 7,B", "SET 7,C", "SET 7,D", "SET 7,E", "SET 7,H", "SET 7,L", "SET 7,(HL)", "SET 7,A" ];
+
+
+
+mbc_type = [];
+mbc_type[0x00] = "ROM ONLY";
+mbc_type[0x13] = "MBC3+RAM+BATTERY";
+mbc_type[0x01] = "MBC1";
+mbc_type[0x15] = "MBC4";
+mbc_type[0x02] = "MBC1+RAM";
+mbc_type[0x16] = "MBC4+RAM";
+mbc_type[0x03] = "MBC1+RAM+BATTERY";
+mbc_type[0x17] = "MBC4+RAM+BATTERY";
+mbc_type[0x05] = "MBC2";
+mbc_type[0x19] = "MBC5";
+mbc_type[0x06] = "MBC2+BATTERY";
+mbc_type[0x1A] = "MBC5+RAM";
+mbc_type[0x08] = "ROM+RAM";
+mbc_type[0x1B] = "MBC5+RAM+BATTERY";
+mbc_type[0x09] = "ROM+RAM+BATTERY";
+mbc_type[0x1C] = "MBC5+RUMBLE";
+mbc_type[0x0B] = "MMM01";
+mbc_type[0x1D] = "MBC5+RUMBLE+RAM";
+mbc_type[0x0C] = "MMM01+RAM";
+mbc_type[0x1E] = "MBC5+RUMBLE+RAM+BATTERY";
+mbc_type[0x0D] = "MMM01+RAM+BATTERY";
+mbc_type[0xFC] = "POCKET CAMERA";
+mbc_type[0x0F] = "MBC3+TIMER+BATTERY";
+mbc_type[0xFD] = "BANDAI TAMA5";
+mbc_type[0x10] = "MBC3+TIMER+RAM+BATTERY";
+mbc_type[0xFE] = "HuC3";
+mbc_type[0x11] = "MBC3";
+mbc_type[0xFF] = "HuC1+RAM+BATTERY";
+mbc_type[0x12] = "MBC3+RAM";
+
+mbc_rom_size = [];
+mbc_rom_size[0x00] = "32KByte (no ROM banking)";
+mbc_rom_size[0x01] = "64KByte (4 banks)";
+mbc_rom_size[0x02] = "128KByte (8 banks)";
+mbc_rom_size[0x03] = "256KByte (16 banks)";
+mbc_rom_size[0x04] = "512KByte (32 banks)";
+mbc_rom_size[0x05] = "1MByte (64 banks)  - (only 63 banks used by MBC1)";
+mbc_rom_size[0x06] = "2MByte (128 banks) - (only 125 banks used by MBC1)";
+mbc_rom_size[0x07] = "4MByte (256 banks)";
+mbc_rom_size[0x52] = "1.1MByte (72 banks)";
+mbc_rom_size[0x53] = "1.2MByte (80 banks)";
+mbc_rom_size[0x54] = "1.5MByte (96 banks)";
+
+mbc_ram_size = [];
+mbc_ram_size[0x00] = "None";
+mbc_ram_size[0x01] = "2 KBytes";
+mbc_ram_size[0x02] = "8 Kbytes";
+mbc_ram_size[0x03] = "32 KBytes (4 banks of 8KBytes each)";

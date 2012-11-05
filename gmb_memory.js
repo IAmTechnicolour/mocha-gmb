@@ -20,7 +20,7 @@ for( i = 0x0000; i <= 0xFFFF; i++) {
  
 //Memory and cart registerss, used for things like rael time clocks, bank switching, enaabling the bios...
 
-var EnableBios = 1; //Is the bios enabled?
+var EnableBios = 0; //Is the bios enabled?
 var CartMode = 0; 	//What mode does the cart use?
 var RomBank = 0;	//What bank in Rom does rom space 1 map to? (rom space 0 always points to bank 0), this is the addative offset, ie bank 1 = 0, bank 2 = 0x4000, bank 3 = 0x8000, etc
 var ERamBank = 0;	//What bank in external ram does the eram memory map to?
@@ -101,7 +101,7 @@ WriteWorkRam = function(addr, data) { WRAM[addr] = data; }
 WriteEchoRam = function(addr, data) {}
 WriteSpriteRam = function(addr, data) { OAM[addr] = data; }
 WriteIO = function(addr, data) { IO[addr] = data; }
-WriteHighRam = function(addr, data) { ReadHighRam[addr] = data; }
+WriteHighRam = function(addr, data) { HRAM[addr] = data; }
 
 
 for( i = 0x0000; i <= 0x1FFF; i++) { MWrite[i] = WriteCartTimer; }

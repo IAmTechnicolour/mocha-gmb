@@ -225,13 +225,13 @@ Operators[ 0xE9 ] = function() { PC = (H << 8) + L; Cycle = 4; }
 Operators[ 0x03 ] =  function() { SetBC(WordInc(BC())); }
 Operators[ 0x13 ] =  function() { SetDE(WordInc(DE())); }
 Operators[ 0x23 ] =  function() { SetHL(WordInc(HL())); }
-Operators[ 0x33 ] =  function() { SP++; PC++; Cycle = 8; }
+Operators[ 0x33 ] =  function() { SP = (SP + 1)&0xFFFF; PC++; Cycle = 8; }
 
 //Decriment 16 Bit Register
 Operators[ 0x0B ] =  function() { SetBC(WordDec(BC())); }
 Operators[ 0x1B ] =  function() { SetDE(WordDec(DE())); }
 Operators[ 0x2B ] =  function() { SetHL(WordDec(HL())); }
-Operators[ 0x3B ] =  function() { SP--; PC++; Cycle = 8; }
+Operators[ 0x3B ] =  function() { SP = (SP - 1)&0xFFFF; PC++; Cycle = 8; }
 
 //Add 16 Bit Register to HL
 Operators[ 0x09 ] =  function() { WordAdd(B, C); }
@@ -366,7 +366,7 @@ Operators[ 0x35 ] = function() {
 	var r1 = Read( (H << 8) + L );
 	SetHCarry( (r1 & 0xF) == 0);
 	SetSub(1);
-	SetZero(r1 == 0);
+	SetZero(r1 == 1);
 	r1--;
 	r1&= 0xFF;
 	PC++;
@@ -375,14 +375,14 @@ Operators[ 0x35 ] = function() {
 }
 Operators[ 0x3D ] = function() { SetHCarry( (A & 0xF) == 0); SetSub(1); SetZero(A == 1); A--; A&= 0xFF; PC++; Cycle = 4; }
 
-Operators[ 0x2F ] = function() { A = 255 - A; F|= FLAG_H + FLAG_N; PC++; Cycle = 4; } // Bitwise NOT on A
-Operators[ 0x37 ] = function() { F|= FLAG_C; F&= ~(FLAG_H + FLAG_N); PC++; Cycle = 4; } //SCF
-Operators[ 0x3F ] = function() { SetCarry(!Carry()); F&= ~(FLAG_H + FLAG_N); PC++; Cycle = 4; } //CCF
+Operators[ 0x2F ] = function() { A = 255 - A; F|= 0x60; PC++; Cycle = 4; } // Bitwise NOT on A
+Operators[ 0x37 ] = function() { F|= 0x10; F&= 0x90; PC++; Cycle = 4; } //SCF
+Operators[ 0x3F ] = function() { SetCarry(!Carry()); F&= 0x90; PC++; Cycle = 4; } //CCF
 
 
 Operators[ 0x17 ] = function() { //Rotate Left Through Carry
 	var Bit7 = A > 127;
-	A = (A << 1) | Carry() & 0xFF;
+	A = ((A << 1) | Carry()) & 0xFF;
 
 	F = 0;
 	SetCarry(Bit7);
@@ -392,7 +392,7 @@ Operators[ 0x17 ] = function() { //Rotate Left Through Carry
 
 Operators[ 0x07 ] = function() {  //Rotate Left 
 	var Bit7 = A > 127;
-	A = (A << 1) | (+Bit7) & 0xFF;
+	A = ((A << 1) | (+Bit7)) & 0xFF;
 
 	F = 0;
 	SetCarry(Bit7);
@@ -436,6 +436,55 @@ Operators[ 0x0F ] = function() {
 
 
 
+//DAA, this one is horrible, the hitler of opcodes, credit to blarrg
+Operators[ 0x27 ] = function() {
+	if (Sub()) {
+		if (HCarry()) { A = (A - 6) & 0xFF ; }
+		if (Carry()) { A-= 0x60; }
+	}else{
+		if (((A & 0xF) > 9) || (HCarry())) { A += 0x06; }
+		if ((A > 0x9F) || (Carry())) { A += 0x60; }
+	}
+
+	SetHCarry(0);
+	SetZero(0);
+
+	if (A > 0xFF) { SetCarry(1); }
+
+	A&= 0xFF; 
+
+	if (A == 0) { SetZero(1); }
+
+	PC++;
+	Cycle = 4;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -457,13 +506,13 @@ Operators[ 0xF5 ] = function() { SP-= 2; Write( SP + 1, A); Write( SP, F ); PC++
 Operators[ 0xC1 ] = function() { B = Read( SP + 1 ); C = Read( SP ); SP+= 2; PC++; Cycle = 12; }
 Operators[ 0xD1 ] = function() { D = Read( SP + 1 ); E = Read( SP ); SP+= 2; PC++; Cycle = 12; }
 Operators[ 0xE1 ] = function() { H = Read( SP + 1 ); L = Read( SP ); SP+= 2; PC++; Cycle = 12; }
-Operators[ 0xF1 ] = function() { A = Read( SP + 1 ); F = Read( SP ); SP+= 2; PC++; Cycle = 12; }
+Operators[ 0xF1 ] = function() { A = Read( SP + 1 ); F = (Read( SP ))&0xF0; SP+= 2; PC++; Cycle = 12; }
 
 
 //Add signed immediate to SP
 Operators[ 0xE8 ] =  function() {
 	var d8 = Read(PC+1); // immediate data
-	var s8 = ((s8&127) - (s8&128)); //Signed immedate
+	var s8 = ((d8&127) - (d8&128)); //Signed immedate
 	var tSP = SP + s8 // Value of the SP when added with the signed immediate
 
 	/* 
@@ -499,7 +548,7 @@ Operators[ 0xE8 ] =  function() {
 
 Operators[ 0xF8 ] = function() {
 	var d8 = Read(PC+1); // immediate data
-	var s8 = ((s8&127) - (s8&128)); //Signed immedate
+	var s8 = ((d8&127) - (d8&128)); //Signed immedate
 	var tSP = SP + s8 // Value of the SP when added with the signed immediate
 	
 	if (s8 >= 0) {
@@ -513,7 +562,7 @@ Operators[ 0xF8 ] = function() {
 	SetSub(0);
 	SetZero(0);
 	
-	H = tSP >> 8;
+	H = ((tSP)&0xFFFF) >> 8;
 	L = tSP & 0xFF;
 	
 	PC+= 2;

@@ -8,7 +8,7 @@ var H = 0;
 var L = 0;
 
 var SP = 0;
-var PC = 0;
+var PC = 0x100;
 
 var IME = 1;
 var Halt = 0;

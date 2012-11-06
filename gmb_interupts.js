@@ -24,7 +24,7 @@ MWrite[ 0xFF0F ] = function( addr, data ) { IF = data & 0x1F; }
 
 function updateInterupts() {
 
-	if (IME) {
+	if (IME || Halt) {
 		if ( IE & IF & 1 ) { //VBlank interrupt
 			
 			IME = 0;

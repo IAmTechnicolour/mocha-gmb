@@ -36,8 +36,8 @@ MWrite[ 0xFF04 ] = function( addr, data ) { Divider = 0; }		//Divider reset to 0
 MWrite[ 0xFF05 ] = function( addr, data ) { Timer = data; }		//Set timer
 MWrite[ 0xFF06 ] = function( addr, data ) { TimerBase = data; }	//Set timer base
 MWrite[ 0xFF07 ] = function( addr, data ) {
-	IO[ 0xFF07 ] = data & 7; 									// First 3 bits, the timer control register can be read as well as written to. 
-	TimerCounter = TimerTable[ data & 3 ];						//bits 0 and 1 set the timer 
+	IO[ 0xFF07 ] = data & 7; 									//First 3 bits, the timer control register can be read as well as written to. 
+	TimerCounter = TimerTable[ data & 3 ];						//bits 0 and 1 set the timer rate
 	TimerEnabled = data & 4;									//bit 2 enables the timer, doesn't matter what value it is so long as it's 0 or not 0 
 }
 
@@ -46,7 +46,7 @@ MWrite[ 0xFF07 ] = function( addr, data ) {
 
 function updateTimers() {
 
-	DividerCycles+= Cycle
+	DividerCycles+= Cycle;
 	if ( DividerCycles > 255 ) {
 		Divider = (Divider + 1) & 0xFF;
 		DividerCycles-= 256;

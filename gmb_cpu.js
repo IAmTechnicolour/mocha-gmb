@@ -10,12 +10,11 @@ var L = 0;
 var SP = 0;
 var PC = 0;
 
-var IME = 0;
+var IME = 1;
 var Halt = 0;
 var Stop = 0;
 
 var Cycle = 0;
-var TotalCycles = 0;
 
 
 
@@ -34,7 +33,7 @@ function boot() {
 	SP = 0;
 	PC = 0;
 
-	IME = 0;
+	IME = 1;
 	Halt = 0;
 	Stop = 0;
 
@@ -51,6 +50,8 @@ In practice it's virtually impossible to sync the Gameboy refresh rate with the 
 
 function executionLoop() {
 
+	var TotalCycles = 0;
+
 	while (TotalCycles < 70224) {
 		if (!Halt) {
 			Operators[Read(PC)]();
@@ -66,7 +67,6 @@ function executionLoop() {
 
 	}
 
-	TotalCycles-= 70224;
 	
 	GPUDraw("canvas1", 0x9800, 1);
 	GPUDraw("canvas2", 0x9800, 0);

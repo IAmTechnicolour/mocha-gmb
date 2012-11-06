@@ -24,7 +24,7 @@ MWrite[ 0xFF0F ] = function( addr, data ) { IF = data & 0x1F; }
 
 function updateInterupts() {
 
-	if (IME && (IE & IF)) {
+	if (IME) {
 		if ( IE & IF & 1 ) { //VBlank interrupt
 			
 			IME = 0;
@@ -32,12 +32,10 @@ function updateInterupts() {
 			IF&= 254;
 
 			SP-= 2;
-			Write(SP + 1, (PC + 1) >> 8);
-			Write(SP, (PC + 1) & 0xFF);
+			Write(SP + 1, PC >> 8);
+			Write(SP, PC & 0xFF);
 
 			PC = 0x40;
-
-			alert("Vblank")
 
 		}else if ( IE & IF & 2 ) { //LCD Interrupt
 
@@ -46,12 +44,10 @@ function updateInterupts() {
 			IF&= 253;
 
 			SP-= 2;
-			Write(SP + 1, (PC + 1) >> 8);
-			Write(SP, (PC + 1) & 0xFF);
+			Write(SP + 1, PC >> 8);
+			Write(SP, PC & 0xFF);
 
 			PC = 0x48;
-
-			alert("lcd")
 
 		}else if ( IE & IF & 4 ) { //TImer Interrupt
 
@@ -60,12 +56,10 @@ function updateInterupts() {
 			IF&= 251;
 
 			SP-= 2;
-			Write(SP + 1, (PC + 1) >> 8);
-			Write(SP, (PC + 1) & 0xFF);
+			Write(SP + 1, PC >> 8);
+			Write(SP, PC & 0xFF);
 
 			PC = 0x50;
-
-			alert("TIMA")
 
 		}else if ( IE & IF & 8 ) { //Serial Port
 
@@ -74,8 +68,8 @@ function updateInterupts() {
 			IF&= 247;
 
 			SP-= 2;
-			Write(SP + 1, (PC + 1) >> 8);
-			Write(SP, (PC + 1) & 0xFF);
+			Write(SP + 1, PC >> 8);
+			Write(SP, PC & 0xFF);
 
 			PC = 0x58;
 
@@ -86,8 +80,8 @@ function updateInterupts() {
 			IF&= 239;
 
 			SP-= 2;
-			Write(SP + 1, (PC + 1) >> 8);
-			Write(SP, (PC + 1) & 0xFF);
+			Write(SP + 1, PC >> 8);
+			Write(SP, PC & 0xFF);
 
 			PC = 0x60;
 

@@ -150,7 +150,7 @@ Operators[ 0x31 ] = function() { SP = ( Read(PC + 2) << 8 ) + Read(PC + 1); PC+=
 // CONTROL OPERATIONS
 
 Operators[ 0x00 ] = function() { PC++; Cycle = 4; } // NOP
-//Operators[ 0x10 ] = function() { Halt = 1; PC+= 2; Cycle = 4; } // STOP
+Operators[ 0x10 ] = function() { Halt = 1; PC+= 2; Cycle = 4; } // STOP
 Operators[ 0x76 ] = function() { if (IME) {Halt = 1;}; PC++; Cycle = 4; } //Halt
 Operators[ 0xF3 ] = function() { IME = 0; PC++; Cycle = 4; } // Disable Interupts, DI
 Operators[ 0xFB ] = function() { IME = 1; PC++; Cycle = 4; } // Enable Interupts, EI

@@ -16,10 +16,10 @@ var SpriteEnable = 0;
 var BGEnable = 0;
 
 //Interupts
-CoincidenceInterupt = 0;
-ModeTwoInterupt = 0;
-ModeOneInterupt = 0;
-ModeZeroInterupt = 0;
+var CoincidenceInterupt = 0;
+var ModeTwoInterupt = 0;
+var ModeOneInterupt = 0;
+var ModeZeroInterupt = 0;
 
 
 
@@ -37,23 +37,6 @@ function bootLCD() {
 
 
 
-
-
-// Background Scroll Y
-MRead[ 0xFF42 ] = function( addr ) { return ScrollY; }
-MWrite[ 0xFF42 ] = function( addr, data ) { ScrollY = data; }
-
-// Background Scroll X
-MRead[ 0xFF43 ] = function( addr ) { return ScrollX; } 
-MWrite[ 0xFF43 ] = function( addr, data ) { ScrollX = data; } 
-
-// Window Scroll X
-MRead[ 0xFF4A ] = function( addr ) { return WindowY; }
-MWrite[ 0xFF4A ] = function( addr, data ) { WindowY = data; }
-
-// Window Scroll Y
-MRead[ 0xFF4B ] = function( addr ) { return WindowX; }
-MWrite[ 0xFF4B ] = function( addr, data ) { WindowX = data; }
 
 
 
@@ -124,22 +107,21 @@ function updateLCD() {
 
 		if (ScanCycle > 456) {
 			ScanCycle-= 456;
-			ScanlineY++;
-			if ( ScanlineY > 153 ) { ScanlineY-= 154; }
+			ScanlineY = ( ScanlineY + 1 )%154;
 		}
 
 		if (ScanlineY >= 144 && ScanlineY <= 153) { //vblank
 			if (Mode != 1) {
-				if (ModeOneInterupt) { IF|= 2; } 	//request LCD interupt for entering Mode 1
+				if (ModeOneInterupt) { IF|= 2; }; 	//request LCD interupt for entering Mode 1
 				IF|= 1; 						//Reques VBlank interupt
 				Mode = 1;
 			}
 
 		}else if (ScanlineY >= 0 && ScanlineY <= 143) { //not vblank
 
-			if (ScanCycle >= 1 && ScanCycle <= 80) {
+			if (ScanCycle >= 0 && ScanCycle <= 80) {
 				if (Mode != 2) {
-					if (ModeTwoInterupt) { IF|= 2; } //request LCD interupt for entering Mode 2
+					if (ModeTwoInterupt) { IF|= 2; }; //request LCD interupt for entering Mode 2
 					Mode = 2;
 				}
 
@@ -149,7 +131,7 @@ function updateLCD() {
 			}else if (ScanCycle >= 253 && ScanCycle <= 456) {
 				if (Mode != 0) {
 					//Render_Scanline()
-					if (ModeZeroInterupt) { IF|= 2; } //request LCD interupt for entering Mode 0
+					if (ModeZeroInterupt) { IF|= 2; }; //request LCD interupt for entering Mode 0
 					Mode = 0;
 				}
 			}

@@ -24,7 +24,7 @@ MWrite[ 0xFF0F ] = function( addr, data ) { IF = data & 0x1F; }
 
 function updateInterupts() {
 
-	if (IME || Halt) {
+	if (IME) {
 		if ( IE & IF & 1 ) { //VBlank interrupt
 			
 			IME = 0;
@@ -49,7 +49,7 @@ function updateInterupts() {
 
 			PC = 0x48;
 
-		}else if ( IE & IF & 4 ) { //TImer Interrupt
+		}else if ( IE & IF & 4 ) { //Timer Interrupt
 
 			IME = 0;
 			Halt = 0;
@@ -61,7 +61,7 @@ function updateInterupts() {
 
 			PC = 0x50;
 
-		}else if ( IE & IF & 8 ) { //Serial Port
+		}else if ( IE & IF & 8 ) { //Serial Port Interrupt
 
 			IME = 0;
 			Halt = 0;

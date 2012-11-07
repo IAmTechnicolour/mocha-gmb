@@ -88,7 +88,7 @@ for( i = 0xE000; i <= 0xFDFF; i++) { MRead[i] = ReadEchoRam; }
 for( i = 0xFE00; i <= 0xFE9F; i++) { MRead[i] = ReadSpriteRam; }
 
 for( i = 0xFF00; i <= 0xFF7F; i++) { MRead[i] = ReadIO; }
-for( i = 0xFF80; i <= 0xFFFF; i++) { MRead[i] = ReadHighRam; }
+for( i = 0xFF80; i <= 0xFFFE; i++) { MRead[i] = ReadHighRam; }
 
 
 function Read(addr) {
@@ -111,7 +111,7 @@ WrteCartModeSelect = function(addr, data) {}
 WriteVideoRam = function(addr, data) { VRAM[addr] = data; }
 WriteExternalRam = function(addr, data) {}
 WriteWorkRam = function(addr, data) { WRAM[addr] = data; }
-WriteEchoRam = function(addr, data) {}
+WriteEchoRam = function(addr, data) { WRAM[addr - 0x2000] = data; }
 WriteSpriteRam = function(addr, data) { OAM[addr] = data; }
 WriteIO = function(addr, data) { IO[addr] = data; }
 WriteHighRam = function(addr, data) { HRAM[addr] = data; }
@@ -130,7 +130,7 @@ for( i = 0xE000; i <= 0xFDFF; i++) {}
 for( i = 0xFE00; i <= 0xFE9F; i++) { MWrite[i] = WriteSpriteRam; }
 for( i = 0xFEA0; i <= 0xFEFF; i++) { MWrite[i] = WriteNothing; }
 for( i = 0xFF00; i <= 0xFF7F; i++) { MWrite[i] = WriteIO; }
-for( i = 0xFF80; i <= 0xFFFF; i++) { MWrite[i] = WriteHighRam; }
+for( i = 0xFF80; i <= 0xFFFE; i++) { MWrite[i] = WriteHighRam; }
 
 
 function Write(addr, data) {

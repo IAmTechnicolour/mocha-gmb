@@ -11,7 +11,7 @@ var WindowMap = 0x9800;
 var WindowEnable = 0;
 var TileData = 0;
 var BGMap = 0x9800;
-var SpriteSize = 8;
+var SpriteSize = 0;
 var SpriteEnable = 0;
 var BGEnable = 0;
 
@@ -41,16 +41,16 @@ function bootLCD() {
 
 
 //Current Scanline Register
-MRead[ 0xFF44 ] = function( addr ) { return ScanlineY; }
-MWrite[ 0xFF44 ] = function( addr, data ) { ScanlineY = 0; } //Reset Scanline
+MRead[ 0xFF44 ] = function(addr) { return ScanlineY; }
+MWrite[ 0xFF44 ] = function(addr, data) { ScanlineY = 0; } //Reset Scanline
 
 //LY Compare
-MRead[ 0xFF45 ] = function( addr ) { return CompareY; }
+MRead[ 0xFF45 ] = function(addr) { return CompareY; }
 MWrite[ 0xFF45 ] = function( addr, data ) { CompareY = data; }
 
 //LCD Control Register
-MRead[ 0xFF40 ] = function( addr ) { return IO[addr]; }
-MWrite[ 0xFF40 ] = function( addr, data ) {
+MRead[ 0xFF40 ] = function(addr) { return IO[addr]; }
+MWrite[ 0xFF40 ] = function(addr, data) {
 
 	IO[addr] = data;
 
@@ -58,18 +58,18 @@ MWrite[ 0xFF40 ] = function( addr, data ) {
 	WindowMap 		= ( (data & 64) ? 0x9C00 : 0x9800);
 	WindowEnable 	= data & 32;
 	TileData 		= data & 16;
-	BGMap 			= ( (data & 4) ? 0x9C00 : 0x9800);
-	SpriteSize 		= ( (data & 4) ? 16 : 8);
+	BGMap 			= ( (data & 8) ? 0x9C00 : 0x9800);
+	SpriteSize 		= data & 4;
 	SpriteEnable 	= data & 2;
 	BGEnable 		= data & 1;
 }
 
 //LCD Status Regiter
-MRead[ 0xFF41 ] = function( addr ) {
+MRead[ 0xFF41 ] = function(addr) {
 	return ( CoincidenceInterupt + ModeTwoInterupt + ModeOneInterupt + ModeZeroInterupt + (CompareY == ScanlineY ? 4 : 0) + Mode );
 }
 
-MWrite[ 0xFF41 ] = function( addr, data ) {
+MWrite[ 0xFF41 ] = function(addr, data) {
 	CoincidenceInterupt = data & 64;
 	ModeTwoInterupt 	= data & 32;
 	ModeOneInterupt 	= data & 16;
@@ -130,7 +130,7 @@ function updateLCD() {
 
 			}else if (ScanCycle >= 253 && ScanCycle <= 456) {
 				if (Mode != 0) {
-					//Render_Scanline()
+					gpu_render();
 					if (ModeZeroInterupt) { IF|= 2; }; //request LCD interupt for entering Mode 0
 					Mode = 0;
 				}

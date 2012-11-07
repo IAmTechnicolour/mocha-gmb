@@ -69,6 +69,17 @@
 
 		<script type="text/javascript">
 
+
+
+
+			var canvas = document.getElementById("canvas1");
+			var ctx = canvas.getContext('2d');
+			var canvasData = ctx.createImageData(canvas.width, canvas.height);
+			var buf = new ArrayBuffer(canvasData.data.length);
+			var buf8 = new Uint8ClampedArray(buf);
+			var PixelData = new Uint32Array(buf);
+
+
 			window.onerror=function(msg, url, linenumber){
 				var Opcode = Read(PC);
 				alert('Error message: '+msg+'\nURL: '+url+'\nLine Number: '+linenumber+'\nOp: '+Opcode+'\nPC: '+PC);

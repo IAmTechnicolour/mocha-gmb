@@ -8,7 +8,7 @@ var H = 0;
 var L = 0;
 
 var SP = 0;
-var PC = 0x100;
+var PC = 0;
 
 var IME = 1;
 var Halt = 0;
@@ -67,10 +67,7 @@ function executionLoop() {
 
 	}
 
-	
-	GPUDraw("canvas1", 0x9800, 1);
-	GPUDraw("canvas2", 0x9800, 0);
-	GPUDraw("canvas3", 0x9C00, 1);
-	GPUDraw("canvas4", 0x9C00, 0);
+	canvasData.data.set(buf8);
+	ctx.putImageData(canvasData, 0, 0);
 }
 

@@ -25,6 +25,13 @@ var CartMode = 0; 	//What mode does the cart use?
 var RomBank = 0;	//What bank in Rom does rom space 1 map to? (rom space 0 always points to bank 0), this is the addative offset, ie bank 1 = 0, bank 2 = 0x4000, bank 3 = 0x8000, etc
 var ERamBank = 0;	//What bank in external ram does the eram memory map to?
 
+var MBC = 0;
+var NumberRomBanks = 0;
+var NumberRamBanks = 0;
+var CartTimerEnable = 0;
+var CartRamEnable = 0;
+
+
 var BIOS = [
 	0x31, 0xFE, 0xFF, 0xAF, 0x21, 0xFF, 0x9F, 0x32, 0xCB, 0x7C, //0
 	0x20, 0xFB, 0x21, 0x26, 0xFF, 0x0E, 0x11, 0x3E, 0x80, 0x32, //10
@@ -67,10 +74,18 @@ var MWrite = [];
 
 ReadBiosSpace = function(addr) { return (EnableBios ? BIOS[addr] : ROM[addr]); }
 ReadRomZero = function(addr) { return ROM[addr]; }
-ReadRomOne = function(addr) { return ROM[addr]; }
+ReadRomOne = function(addr) { return ROM[addr + RomBank*0x4000]; }
 
 ReadVideoRam = function(addr) { return VRAM[addr]; }
-ReadExternalRam = function(addr) { return 0; }
+ReadExternalRam = function(addr) {
+	if (CartRamEnable) {
+		switch(MBC) {
+			case 3:
+				return ERAM[addr + RamBank*0x2000];
+				break;
+		}
+	}
+}
 ReadWorkRam = function(addr) { return WRAM[addr]; }
 ReadEchoRam = function(addr) { return WRAM[addr - 0x2000]; }
 ReadSpriteRam = function(addr) {return OAM[addr]; }
@@ -104,10 +119,47 @@ function Read(addr) {
 
 
 
-WriteCartTimer = function(addr, data) {}
-WriteCartRomBank = function(addr, data) {}
-WriteCartRamBank = function(addr, data) {}
+WriteCartEnable = function(addr, data) {
+	switch(MBC) {
+		case 3:
+			CartRamEnable = 1;
+			break;
+	}
+
+}
+WriteCartRomBank = function(addr, data) {
+
+	switch(MBC) {
+		case 0: //ROM
+			RomBank = 0;
+			break; 
+		case 3: //MBC3
+			RomBank = (data&NumberRomBanks) - 1;
+			if (RomBank == -1) {RomBank = 0;};
+			break;
+	
+	}
+
+}
+
+
+WriteCartRamBank = function(addr, data) {
+
+	switch(MBC) {
+		case 3: //MBC3
+			RamBank = (data&NumberRamBanks);
+			break;
+	
+	}
+
+
+
+}
 WrteCartModeSelect = function(addr, data) {}
+
+
+
+
 WriteVideoRam = function(addr, data) { VRAM[addr] = data; }
 WriteExternalRam = function(addr, data) {}
 WriteWorkRam = function(addr, data) { WRAM[addr] = data; }
@@ -118,10 +170,10 @@ WriteHighRam = function(addr, data) { HRAM[addr] = data; }
 WriteNothing = function(addr, data) {}
 
 
-for( i = 0x0000; i <= 0x1FFF; i++) { MWrite[i] = WriteCartTimer; }
+for( i = 0x0000; i <= 0x1FFF; i++) { MWrite[i] = WriteCartEnable; }
 for( i = 0x2000; i <= 0x3FFF; i++) { MWrite[i] = WriteCartRomBank; }
-for( i = 0x4000; i <= 0x5FFF; i++) {}
-for( i = 0x4000; i <= 0x7FFF; i++) {}
+for( i = 0x4000; i <= 0x5FFF; i++) { MWrite[i] = WriteCartRamBank; }
+for( i = 0x6000; i <= 0x7FFF; i++) { MWrite[i] = WrteCartModeSelect; }
 
 for( i = 0x8000; i <= 0x9FFF; i++) { MWrite[i] = WriteVideoRam; }
 for( i = 0xA000; i <= 0xBFFF; i++) { MWrite[i] = WriteExternalRam; }
@@ -165,7 +217,7 @@ MWrite[0xFF50] = function(addr, data) { EnableBios = 0; }
 MRead[ 0xFF46 ] = function(addr) { return 0; }
 
 MWrite[ 0xFF46 ] = function(addr, data) {
-	data = data << 8
+	data<<= 8;
 
 	for(var n = 0; n <= 0xA0; n++) {
 		OAM[ 0xFE00 + n ] = Read( data + n );

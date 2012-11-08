@@ -63,32 +63,10 @@ function GPUDraw() {
 
 function gpu_render() {
 
-	ColourPalette = [0xFFFFFFFF, 0xFF90A8D0, 0xFF485870, 0xFF000000];
-
-	var PalMem = IO[ 0xFF47 ];
-
 	//Setup the palette
+	ColourPalette = [0xFFFFFFFF, 0xFF90A8D0, 0xFF485870, 0xFF000000];
+	var PalMem = IO[ 0xFF47 ];
 	var BGPal = [ PalMem & 3, (PalMem >> 2) & 3, (PalMem >> 4) & 3, (PalMem >> 6) & 3 ];
-
-
-	var YCo = ScanlineY ;
-	var PixelY = YCo;
-
-	var ScrollY = IO[ 0xFF42 ];
-	var ScrollX = IO[ 0xFF43 ];
-	var WindowX = IO[ 0xFF4A ];
-	var WindowY = IO[ 0xFF4B ];
-
-	var TileX = ScrollX >> 3; //Division by 8 and flooring is the same as shifting right by 3
-	var TileY = ((ScrollY + YCo) & 0xFF) >> 3; //Division by 8
-
-	var XOffset = 7 - ( ScrollX & 7 );
-	var YOffset = (ScrollY + YCo) & 7;
-
-	var WinTileY = (YCo - WindowY) >> 3;
-	var WinYOfffset = (YCo - WindowY) & 7; //Modulo 8 the same as & 7?
-
-	var WinX = WindowX - 7;
 
 	var ScanlineColour = [];
 	var ScanlineData = [];
@@ -96,17 +74,26 @@ function gpu_render() {
 
 	if (BGEnable) {
 
+		var ScrollY = IO[ 0xFF42 ];
+		var ScrollX = IO[ 0xFF43 ];
+
+		var TileX = ScrollX >> 3; //Division by 8 and flooring is the same as shifting right by 3
+		var TileY = ((ScrollY + ScanlineY) & 0xFF) >> 3; //Division by 8
+
+		var XOffset = 7 - ( ScrollX & 7 );
+		var YOffset = (ScrollY + ScanlineY) & 7;
+
 		for (i = 0; i <= 20; i++) {
 
-			var TileID = VRAM[ BGMap + ((i + TileX) & 0x1F) + TileY*32 ]
+			var TileID = VRAM[ BGMap + ((i + TileX) & 0x1F) + TileY*32 ];
 
 			if (TileData) {
-				var ByteA = VRAM[ 0x8000 + TileID*16 + YOffset*2 ]
-				var ByteB = VRAM[ 0x8000 + TileID*16 + YOffset*2 + 1 ]
+				var ByteA = VRAM[ 0x8000 + TileID*16 + YOffset*2 ];
+				var ByteB = VRAM[ 0x8000 + TileID*16 + YOffset*2 + 1 ];
 			}else{
 				TileID = (TileID & 127) - (TileID & 128);
-				var ByteA = VRAM[ 0x9000 + TileID*16 + YOffset*2 ]
-				var ByteB = VRAM[ 0x9000 + TileID*16 + YOffset*2 + 1 ]
+				var ByteA = VRAM[ 0x9000 + TileID*16 + YOffset*2 ];
+				var ByteB = VRAM[ 0x9000 + TileID*16 + YOffset*2 + 1 ];
 			}
 
 			for (j = 0; j <= 7; j++) {
@@ -114,7 +101,6 @@ function gpu_render() {
 				var PixelX = i*8 - j + XOffset ;
 
 				if (PixelX >= 0 && PixelX <= 159) {
-
 					var Data = ((ByteA >> j) & 1) + ((ByteB >> j) & 1)*2;
 					var Colour = BGPal[ Data ];
 
@@ -125,33 +111,44 @@ function gpu_render() {
 		}
 	}
 
-	if (WindowEnable && YCo >= WindowY && WinX >= -7 && WinX < 160) {
+
+
+
+
+
+
+
+
+
+
+	var WindowY = IO[ 0xFF4A ];
+	var WindowX = IO[ 0xFF4B ];
+
+	var WinTileY = (ScanlineY - WindowY) >> 3;
+	var WinYOffset = (ScanlineY - WindowY) & 7; //Modulo 8 the same as & 7?
+
+
+	if (WindowEnable && ScanlineY >= WindowY && WindowX >= 0 && WindowX <= 166) {
 
 		for (i = 0; i <= 20; i++) {
 
-			var TileID = VRAM[ BGMap + ((i + TileX) & 0x1F) + TileY*32 ]
+			var TileID = VRAM[ WindowMap + i + WinTileY*32 ];
 
 			if (TileData) {
-
-				var ByteA = VRAM[ 0x8000 + TileID*16 + YOffset*2 ]
-				var ByteB = VRAM[ 0x8000 + TileID*16 + YOffset*2 + 1 ]
-
+				var ByteA = VRAM[ 0x8000 + TileID*16 + WinYOffset*2 ];
+				var ByteB = VRAM[ 0x8000 + TileID*16 + WinYOffset*2 + 1 ];
 			}else{
-
 				TileID = (TileID & 127) - (TileID & 128);
-
-				var ByteA = VRAM[ 0x9000 + TileID*16 + YOffset*2 ]
-				var ByteB = VRAM[ 0x9000 + TileID*16 + YOffset*2 + 1 ]
-
+				var ByteA = VRAM[ 0x9000 + TileID*16 + WinYOffset*2 ];
+				var ByteB = VRAM[ 0x9000 + TileID*16 + WinYOffset*2 + 1 ];
 			}
 
 
 			for (j = 0; j <= 7; j++) {
 					
-				var PixelX = i*8 - j + WindowX
+				var PixelX = i*8 - j + WindowX;
 
 				if (PixelX >= 0 && PixelX <= 159) {
-
 					var Data = ((ByteA >> j) & 1) + ((ByteB >> j) & 1)*2;
 					var Colour = BGPal[ Data ];
 
@@ -165,10 +162,18 @@ function gpu_render() {
 
 
 
+
+
+
+
+
+
+
+
 	if (SpriteEnable) {
 
-		var PalMem1 = IO[ 0xFF49 ]
-		var PalMem2 = IO[ 0xFF48 ]
+		var PalMem1 = IO[ 0xFF49 ];
+		var PalMem2 = IO[ 0xFF48 ];
 
 		var SpPal1 = [ PalMem1 & 3, (PalMem1 >> 2) & 3, (PalMem1 >> 4) & 3, (PalMem1 >> 6) & 3 ];
 		var SpPal2 = [ PalMem2 & 3, (PalMem2 >> 2) & 3, (PalMem2 >> 4) & 3, (PalMem2 >> 6) & 3 ];
@@ -177,7 +182,7 @@ function gpu_render() {
 
 			for (n = 160; n >= 0; n-= 4) {
 
-				var YPos = 		OAM[ 0xFE00 + n ] - 16;
+				var YPos = OAM[ 0xFE00 + n ] - 16;
 
 				if (ScanlineY >= YPos && ScanlineY < YPos + 8) {
 
@@ -190,10 +195,10 @@ function gpu_render() {
 					var XFlip = 	SFlags & 32;
 					var SPalID = 	SFlags & 16;
 
-					var TileOffset = ( YFlip ? -(ScanlineY - YPos) + 7 : ScanlineY - YPos )*2;
+					var TileOffset = ( YFlip ? -(ScanlineY - YPos) + 7 : ScanlineY - YPos );
 
-					var ByteA = VRAM[ 0x8000 + TileID*16 + TileOffset ];
-					var ByteB = VRAM[ 0x8000 + TileID*16 + TileOffset + 1 ];
+					var ByteA = VRAM[ 0x8000 + TileID*16 + TileOffset*2 ];
+					var ByteB = VRAM[ 0x8000 + TileID*16 + TileOffset*2 + 1 ];
 
 					for (j = 0; j <= 7; j++) {
 						var PixelX = (XFlip ? j + XPos : -j + 7 + XPos);
@@ -216,7 +221,7 @@ function gpu_render() {
 
 			for (n = 160; n >= 0; n-= 4) {
 
-				var YPos = 		OAM[ 0xFE00 + n ] - 16;
+				var YPos = OAM[ 0xFE00 + n ] - 16;
 
 				if (ScanlineY >= YPos && ScanlineY < YPos + 16) {
 
@@ -230,7 +235,7 @@ function gpu_render() {
 					var XFlip = 	SFlags & 32;
 					var SPalID = 	SFlags & 16;
 
-					var TileOffset = ( YFlip ? -(ScanlineY - YPos) + 15 : ScanlineY - YPos )*2;
+					var TileOffset = ( YFlip ? -(ScanlineY - YPos) + 15 : ScanlineY - YPos );
 
 					if (TileOffset < 8) {
 						TileID&= 0xFE;
@@ -239,8 +244,8 @@ function gpu_render() {
 						TileOffset-= 8;
 					}
 
-					var ByteA = VRAM[ 0x8000 + TileID*16 + TileOffset ];
-					var ByteB = VRAM[ 0x8000 + TileID*16 + TileOffset + 1 ];
+					var ByteA = VRAM[ 0x8000 + TileID*16 + TileOffset*2 ];
+					var ByteB = VRAM[ 0x8000 + TileID*16 + TileOffset*2 + 1 ];
 
 					for (j = 0; j <= 7; j++) {
 						var PixelX = (XFlip ? j + XPos : -j + 7 + XPos);
@@ -262,7 +267,7 @@ function gpu_render() {
 
 
 	for (n = 0; n <= 159; n++) {
-		PixelData[(PixelY * 160 + n)] = ColourPalette[ScanlineColour[n]]
+		PixelData[(ScanlineY * 160 + n)] = ColourPalette[ScanlineColour[n]]
 	}
 
 }

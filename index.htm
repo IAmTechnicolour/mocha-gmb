@@ -92,10 +92,14 @@
 				}	
 
 				alert('ROM size: ' + ROM.length +
-				' bytes\nROM type: ' + mbc_type[ROM[0x0147]] + 
-				"\nROM banks: " + mbc_rom_size[ROM[0x0148]] + 
-				"\nRAM banks: " + mbc_ram_size[ROM[0x0149]]);
+				' bytes\nROM type: ' + tmbc_type[ROM[0x0147]] + 
+				"\nROM banks: " + tmbc_rom_size[ROM[0x0148]] + 
+				"\nRAM banks: " + tmbc_ram_size[ROM[0x0149]]);
 
+
+				MBC = tmbc_rom_id[ROM[0x0147]];
+				NumberRomBanks = tmbc_rom_banks[ROM[0x0148]];
+				NumberRamBanks = 3;
 				
 			}
 

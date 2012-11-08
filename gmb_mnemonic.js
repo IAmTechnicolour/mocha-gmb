@@ -45,52 +45,119 @@ Mnemonic_map_cb = [
 
 
 
-mbc_type = [];
-mbc_type[0x00] = "ROM ONLY";
-mbc_type[0x13] = "MBC3+RAM+BATTERY";
-mbc_type[0x01] = "MBC1";
-mbc_type[0x15] = "MBC4";
-mbc_type[0x02] = "MBC1+RAM";
-mbc_type[0x16] = "MBC4+RAM";
-mbc_type[0x03] = "MBC1+RAM+BATTERY";
-mbc_type[0x17] = "MBC4+RAM+BATTERY";
-mbc_type[0x05] = "MBC2";
-mbc_type[0x19] = "MBC5";
-mbc_type[0x06] = "MBC2+BATTERY";
-mbc_type[0x1A] = "MBC5+RAM";
-mbc_type[0x08] = "ROM+RAM";
-mbc_type[0x1B] = "MBC5+RAM+BATTERY";
-mbc_type[0x09] = "ROM+RAM+BATTERY";
-mbc_type[0x1C] = "MBC5+RUMBLE";
-mbc_type[0x0B] = "MMM01";
-mbc_type[0x1D] = "MBC5+RUMBLE+RAM";
-mbc_type[0x0C] = "MMM01+RAM";
-mbc_type[0x1E] = "MBC5+RUMBLE+RAM+BATTERY";
-mbc_type[0x0D] = "MMM01+RAM+BATTERY";
-mbc_type[0xFC] = "POCKET CAMERA";
-mbc_type[0x0F] = "MBC3+TIMER+BATTERY";
-mbc_type[0xFD] = "BANDAI TAMA5";
-mbc_type[0x10] = "MBC3+TIMER+RAM+BATTERY";
-mbc_type[0xFE] = "HuC3";
-mbc_type[0x11] = "MBC3";
-mbc_type[0xFF] = "HuC1+RAM+BATTERY";
-mbc_type[0x12] = "MBC3+RAM";
+tmbc_type = [];
+tmbc_type[0x00] = "ROM ONLY";
+tmbc_type[0x13] = "MBC3+RAM+BATTERY";
+tmbc_type[0x01] = "MBC1";
+tmbc_type[0x15] = "MBC4";
+tmbc_type[0x02] = "MBC1+RAM";
+tmbc_type[0x16] = "MBC4+RAM";
+tmbc_type[0x03] = "MBC1+RAM+BATTERY";
+tmbc_type[0x17] = "MBC4+RAM+BATTERY";
+tmbc_type[0x05] = "MBC2";
+tmbc_type[0x19] = "MBC5";
+tmbc_type[0x06] = "MBC2+BATTERY";
+tmbc_type[0x1A] = "MBC5+RAM";
+tmbc_type[0x08] = "ROM+RAM";
+tmbc_type[0x1B] = "MBC5+RAM+BATTERY";
+tmbc_type[0x09] = "ROM+RAM+BATTERY";
+tmbc_type[0x1C] = "MBC5+RUMBLE";
+tmbc_type[0x0B] = "MMM01";
+tmbc_type[0x1D] = "MBC5+RUMBLE+RAM";
+tmbc_type[0x0C] = "MMM01+RAM";
+tmbc_type[0x1E] = "MBC5+RUMBLE+RAM+BATTERY";
+tmbc_type[0x0D] = "MMM01+RAM+BATTERY";
+tmbc_type[0xFC] = "POCKET CAMERA";
+tmbc_type[0x0F] = "MBC3+TIMER+BATTERY";
+tmbc_type[0xFD] = "BANDAI TAMA5";
+tmbc_type[0x10] = "MBC3+TIMER+RAM+BATTERY";
+tmbc_type[0xFE] = "HuC3";
+tmbc_type[0x11] = "MBC3";
+tmbc_type[0xFF] = "HuC1+RAM+BATTERY";
+tmbc_type[0x12] = "MBC3+RAM";
 
-mbc_rom_size = [];
-mbc_rom_size[0x00] = "32KByte (no ROM banking)";
-mbc_rom_size[0x01] = "64KByte (4 banks)";
-mbc_rom_size[0x02] = "128KByte (8 banks)";
-mbc_rom_size[0x03] = "256KByte (16 banks)";
-mbc_rom_size[0x04] = "512KByte (32 banks)";
-mbc_rom_size[0x05] = "1MByte (64 banks)  - (only 63 banks used by MBC1)";
-mbc_rom_size[0x06] = "2MByte (128 banks) - (only 125 banks used by MBC1)";
-mbc_rom_size[0x07] = "4MByte (256 banks)";
-mbc_rom_size[0x52] = "1.1MByte (72 banks)";
-mbc_rom_size[0x53] = "1.2MByte (80 banks)";
-mbc_rom_size[0x54] = "1.5MByte (96 banks)";
 
-mbc_ram_size = [];
-mbc_ram_size[0x00] = "None";
-mbc_ram_size[0x01] = "2 KBytes";
-mbc_ram_size[0x02] = "8 Kbytes";
-mbc_ram_size[0x03] = "32 KBytes (4 banks of 8KBytes each)";
+//0 = ROM, 1 = MBC1, 2 = MBC2, 3 = MBC3, -1 Unsupported
+tmbc_rom_id = [];
+tmbc_rom_id[0x00] = 0
+tmbc_rom_id[0x13] = 3
+tmbc_rom_id[0x01] = 1
+tmbc_rom_id[0x15] = -1
+tmbc_rom_id[0x02] = 1
+tmbc_rom_id[0x16] = -1
+tmbc_rom_id[0x03] = 1
+tmbc_rom_id[0x17] = -1
+tmbc_rom_id[0x05] = 2
+tmbc_rom_id[0x19] = -1
+tmbc_rom_id[0x06] = 2
+tmbc_rom_id[0x1A] = -1
+tmbc_rom_id[0x08] = 0
+tmbc_rom_id[0x1B] = -1
+tmbc_rom_id[0x09] = 0
+tmbc_rom_id[0x1C] = -1
+tmbc_rom_id[0x0B] = -1
+tmbc_rom_id[0x1D] = -1
+tmbc_rom_id[0x0C] = -1
+tmbc_rom_id[0x1E] = -1
+tmbc_rom_id[0x0D] = -1
+tmbc_rom_id[0xFC] = -1
+tmbc_rom_id[0x0F] = 3
+tmbc_rom_id[0xFD] = -1
+tmbc_rom_id[0x10] = 3
+tmbc_rom_id[0xFE] = -1
+tmbc_rom_id[0x11] = 3
+tmbc_rom_id[0xFF] = -1
+tmbc_rom_id[0x12] = 3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tmbc_rom_size = [];
+tmbc_rom_size[0x00] = "32KByte (no ROM banking)";
+tmbc_rom_size[0x01] = "64KByte (4 banks)";
+tmbc_rom_size[0x02] = "128KByte (8 banks)";
+tmbc_rom_size[0x03] = "256KByte (16 banks)";
+tmbc_rom_size[0x04] = "512KByte (32 banks)";
+tmbc_rom_size[0x05] = "1MByte (64 banks)  - (only 63 banks used by MBC1)";
+tmbc_rom_size[0x06] = "2MByte (128 banks) - (only 125 banks used by MBC1)";
+tmbc_rom_size[0x07] = "4MByte (256 banks)";
+tmbc_rom_size[0x52] = "1.1MByte (72 banks)";
+tmbc_rom_size[0x53] = "1.2MByte (80 banks)";
+tmbc_rom_size[0x54] = "1.5MByte (96 banks)";
+
+
+// 0 is a bank, so 7 = 8 banks. -1 is unsupported
+tmbc_rom_banks = [];
+tmbc_rom_banks[0x00] = 1
+tmbc_rom_banks[0x01] = 3
+tmbc_rom_banks[0x02] = 7
+tmbc_rom_banks[0x03] = 15
+tmbc_rom_banks[0x04] = 31
+tmbc_rom_banks[0x05] = 63
+tmbc_rom_banks[0x06] = 127
+tmbc_rom_banks[0x07] = 255
+tmbc_rom_banks[0x52] = -1
+tmbc_rom_banks[0x53] = -1
+tmbc_rom_banks[0x54] = -1
+
+tmbc_ram_size = [];
+tmbc_ram_size[0x00] = "None";
+tmbc_ram_size[0x01] = "2 KBytes";
+tmbc_ram_size[0x02] = "8 Kbytes";
+tmbc_ram_size[0x03] = "32 KBytes (4 banks of 8KBytes each)";
+
+tmbc_ram_banks = []; //-1 unsupported
+tmbc_ram_size[0x00] = -1;
+tmbc_ram_size[0x01] = -1;
+tmbc_ram_size[0x02] = 0;
+tmbc_ram_size[0x03] = 3;

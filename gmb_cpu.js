@@ -48,6 +48,9 @@ The Execution Loop is equivilent to one frame of operation, in theory.
 In practice it's virtually impossible to sync the Gameboy refresh rate with the user refreshrate.
 */
 
+var Perf = 0;
+var PerfTime = new Date().getTime();
+
 function executionLoop() {
 
 	var TotalCycles = 0;
@@ -69,5 +72,16 @@ function executionLoop() {
 
 	canvasData.data.set(buf8);
 	ctx.putImageData(canvasData, 0, 0);
+
+	Perf++;
+	if (Perf == 60) {
+		Perf = 0;
+		var TimePerSecond = 1/(((new Date().getTime()) - PerfTime)/1000/60);
+		PerfTime = new Date().getTime();
+
+		document.getElementById("fps").innerHTML = ("FPS: " + TimePerSecond);
+	}
+
+
 }
 

@@ -63,7 +63,7 @@ function GPUDraw() {
 
 function gpu_render() {
 
-	ColourPalette = [0xFFFFFFFF, 0xFF00FF00, 0xFF000000, 0xFF0000FF];
+	ColourPalette = [0xFFFFFFFF, 0xFF90A8D0, 0xFF485870, 0xFF000000];
 
 	var PalMem = IO[ 0xFF47 ];
 
@@ -82,11 +82,11 @@ function gpu_render() {
 	var TileX = ScrollX >> 3; //Division by 8 and flooring is the same as shifting right by 3
 	var TileY = ((ScrollY + YCo) & 0xFF) >> 3; //Division by 8
 
-	var XOffset = 7 - ( ScrollX % 8 );
-	var YOffset = (ScrollY + YCo) % 8;
+	var XOffset = 7 - ( ScrollX & 7 );
+	var YOffset = (ScrollY + YCo) & 7;
 
 	var WinTileY = (YCo - WindowY) >> 3;
-	var WinYOfffset = (YCo - WindowY) % 8; //Modulo 8 the same as & 7?
+	var WinYOfffset = (YCo - WindowY) & 7; //Modulo 8 the same as & 7?
 
 	var WinX = WindowX - 7;
 
@@ -262,7 +262,7 @@ function gpu_render() {
 
 
 	for (n = 0; n <= 159; n++) {
-		PixelData[(PixelY * 256 + n)] = ColourPalette[ScanlineColour[n]]
+		PixelData[(PixelY * 160 + n)] = ColourPalette[ScanlineColour[n]]
 	}
 
 }

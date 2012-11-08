@@ -39,14 +39,33 @@
 	<body>
 
 		<canvas id="canvas1" width="160" height="144"></canvas>
+		<canvas id="canvas2" width="256" height="256"></canvas>
+		<canvas id="canvas3" width="256" height="256"></canvas>
+		<canvas id="canvas4" width="256" height="256"></canvas>
 
 		<br><br>
-		<div id = "fps"> FPS: </div><br>
 		<input type="file" id="file" name="file"/><br>
 		<output id="list"></output><br>
 
-		<button type="button" onclick="run = setInterval(executionLoop,1);">Run</button>
+		<button type="button" onclick="debug()">Execute</button>
+		<button type="button" onclick="run = setInterval(executionLoop,16.6);">Run</button>
 		<button type="button" onclick="clearInterval(run)">Stop</button>
+
+		<table id = "tab">
+			<thead>
+				<tr>
+					<td>Opcode</td><td>Mnemonic</td><td>PC</td><td>SP</td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>H</td><td>L</td><td>F</td>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+
+		<br><br><br>
+
+		<table id = "tab2">
+		</table>
+
 
 		<script type="text/javascript">
 
@@ -65,6 +84,84 @@
 				var Opcode = Read(PC);
 				alert('Error message: '+msg+'\nURL: '+url+'\nLine Number: '+linenumber+'\nOp: '+Opcode+'\nPC: '+PC);
 				return true
+			}
+
+
+
+
+
+
+			function pad(num, size) {
+			    var s = num+"";
+			    while (s.length < size) s = "0" + s;
+			    return s;
+			}
+
+
+
+			/*
+			var OpCount = [];
+
+			for (var i=0xFF;i >= 0;i--) {
+				var table = document.getElementById("tab2");
+				var row = table.insertRow(0);
+				var cell = row.insertCell(0);
+				cell.innerHTML = Mnemonic_map[i];
+				var cell = row.insertCell(1);
+				cell.innerHTML = 0;
+
+				OpCount[i] = 0;
+			}
+			*/
+
+
+
+			function debug() {
+
+				var Opcode = Read(PC);
+				Operators[Opcode]();
+				var Mnemonic = Mnemonic_map[Opcode];
+
+				/*
+				OpCount[Opcode]++;
+
+				var x=document.getElementById('tab2').rows;
+    			var y=x[Opcode].cells;
+    			y[1].innerHTML=OpCount[Opcode];
+    			*/
+
+
+				if (Opcode == 0xCB) {Mnemonic = Mnemonic_map_cb[Read(PC+1)]}
+
+				var InsertIntoDebug = [
+					pad(Opcode.toString(16).toUpperCase(), 2),
+					Mnemonic, 
+					PC, 
+					SP, 
+					A, 
+					B, 
+					C, 
+					D, 
+					E, 
+					H, 
+					L, 
+					pad((F>>4).toString(2),4)
+				];
+
+				var table = document.getElementById("tab");
+				var row = table.insertRow(1);
+
+
+				for (var i=0;i<InsertIntoDebug.length;i++) {
+					var cell = row.insertCell(i);
+					cell.innerHTML = InsertIntoDebug[i];
+				}
+
+				if (table.rows.length > 20) {
+					table.deleteRow(table.rows.length - 1)
+				}
+
+
 			}
 
 
